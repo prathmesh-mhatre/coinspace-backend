@@ -12,15 +12,12 @@ router.get('/', async (req, res) => {
 
   try {
     // Fetch asset IDs and names for all requested symbols
-    const assetResult = await pool.query(
-      `SELECT id, symbol, name FROM asset WHERE symbol = ANY($1)`,
-      [assetSymbols]
-    );
-    if (assetResult.rowCount === 0) return res.status(404).json({ message: 'No assets found' });
+    const assetResult = await pool`SELECT id, symbol, name FROM asset WHERE symbol = ANY(${assetSymbols})`;
+    if (assetResult.length === 0) return res.status(404).json({ message: 'No assets found' });
 
     // Map: symbol -> { id, name }
     const assetMap = {};
-    assetResult.rows.forEach(row => {
+    assetResult.forEach(row => {
       assetMap[row.symbol] = { id: row.id, name: row.name };
     });
 
@@ -29,17 +26,15 @@ router.get('/', async (req, res) => {
       const asset = assetMap[symbol];
       if (!asset) return { symbol, error: 'Asset not found' };
       // Candlesticks
-      const cQuery = `SELECT * FROM candlestick WHERE asset_id = $1 AND fiat_code = $2 ORDER BY open_time DESC LIMIT $3`;
-      const cResult = await pool.query(cQuery, [asset.id, fiat, lim]);
+      const cResult = await pool`SELECT * FROM candlestick WHERE asset_id = ${asset.id} AND fiat_code = ${fiat} ORDER BY open_time DESC LIMIT ${lim}`;
       // Latest price snapshot
-      const pQuery = `SELECT price, pct_change_24h FROM price_snapshot WHERE asset_id = $1 AND fiat_code = $2 ORDER BY taken_at DESC LIMIT 1`;
-      const pResult = await pool.query(pQuery, [asset.id, fiat]);
+      const pResult = await pool`SELECT price, pct_change_24h FROM price_snapshot WHERE asset_id = ${asset.id} AND fiat_code = ${fiat} ORDER BY taken_at DESC LIMIT 1`;
       return {
         symbol,
         name: asset.name,
-        candlesticks: cResult.rows.reverse(), // chronological order
-        price: pResult.rows[0]?.price || null,
-        pct_change_24h: pResult.rows[0]?.pct_change_24h || null
+        candlesticks: cResult.reverse(), // chronological order
+        price: pResult[0]?.price || null,
+        pct_change_24h: pResult[0]?.pct_change_24h || null
       };
     }));
 

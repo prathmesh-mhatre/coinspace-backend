@@ -5,8 +5,8 @@ const pool = require('../config/db');
 // GET /api/assets
 router.get('/', async (req, res) => {
   try {
-    const result = await pool.query('SELECT id, symbol, name, icon_url FROM asset ORDER BY id');
-    res.json(result.rows);
+    const result = await pool`SELECT id, symbol, name, icon_url FROM asset ORDER BY id`;
+    res.json(result);
   } catch (err) {
     console.error('Error fetching assets:', err);
     res.status(500).json({ message: 'Error fetching assets' });
