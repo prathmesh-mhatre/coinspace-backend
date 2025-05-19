@@ -1,0 +1,103 @@
+{
+  "info": {
+    "name": "Coinspace API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_postman_id": "coinspace-api-collection"
+  },
+  "item": [
+    {
+      "name": "Get All Assets",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "http://localhost:3000/api/assets", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "assets"] }
+      }
+    },
+    {
+      "name": "Get All Fiat Currencies",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": { "raw": "http://localhost:3000/api/fiat-currencies", "protocol": "http", "host": ["localhost"], "port": "3000", "path": ["api", "fiat-currencies"] }
+      }
+    },
+    {
+      "name": "Get Latest Price Snapshots",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/price-snapshots?fiat=JPY",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "price-snapshots"],
+          "query": [{ "key": "fiat", "value": "JPY" }]
+        }
+      }
+    },
+    {
+      "name": "Get Candlesticks (Multiple Assets)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/candlesticks?assets=BTC,ETH,XRP&fiat=JPY&limit=60",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "candlesticks"],
+          "query": [
+            { "key": "assets", "value": "BTC,ETH,XRP" },
+            { "key": "fiat", "value": "JPY" },
+            { "key": "limit", "value": "60" }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get User Activities",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/users/1/activities?limit=20",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "users", "1", "activities"],
+          "query": [{ "key": "limit", "value": "20" }]
+        }
+      }
+    },
+    {
+      "name": "Get News Articles",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/news?limit=10",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "news"],
+          "query": [{ "key": "limit", "value": "10" }]
+        }
+      }
+    },
+    {
+      "name": "Sample API",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/sample",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "sample"]
+        }
+      }
+    }
+  ]
+}
